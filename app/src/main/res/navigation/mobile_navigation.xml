@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_about">
-
-    <fragment
-        android:id="@+id/navigation_about"
-        android:name="com.afaneca.marvelchallenge.ui.about.AboutFragment"
-        android:label="@string/title_about"
-        tools:layout="@layout/fragment_characters" />
+    app:startDestination="@+id/navigation_characters">
 
     <fragment
         android:id="@+id/navigation_characters"
         android:name="com.afaneca.marvelchallenge.ui.characters.CharactersFragment"
         android:label="@string/title_characters"
         tools:layout="@layout/fragment_details" />
+
+    <fragment
+        android:id="@+id/navigation_about"
+        android:name="com.afaneca.marvelchallenge.ui.about.AboutFragment"
+        android:label="@string/title_about"
+        tools:layout="@layout/fragment_characters" />
 
     <fragment
         android:id="@+id/navigation_details"

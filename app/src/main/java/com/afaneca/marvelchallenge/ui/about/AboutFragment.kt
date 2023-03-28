@@ -4,35 +4,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.afaneca.marvelchallenge.databinding.FragmentNotificationsBinding
+import androidx.fragment.app.viewModels
+import com.afaneca.marvelchallenge.databinding.FragmentAboutBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AboutFragment : Fragment() {
 
-    private var _binding: FragmentNotificationsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private var _binding: FragmentAboutBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: AboutViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val aboutViewModel =
-            ViewModelProvider(this).get(AboutViewModel::class.java)
+        _binding = FragmentAboutBinding.inflate(inflater, container, false)
+        observeState()
+        return binding.root
+    }
 
-        _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textNotifications
-        aboutViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        return root
+    private fun observeState() {
+        // TODO
     }
 
     override fun onDestroyView() {
