@@ -4,13 +4,13 @@
 
     <item
         android:id="@+id/navigation_characters"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/tab_homepage"
         android:title="@string/title_characters"
         app:labelVisibilityMode="unlabeled" />
 
     <item
         android:id="@+id/navigation_about"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/tab_about"
         android:title="@string/title_about"
         app:labelVisibilityMode="unlabeled" />
 
