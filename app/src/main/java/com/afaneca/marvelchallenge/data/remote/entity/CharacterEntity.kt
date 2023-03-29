@@ -1,8 +1,7 @@
 package com.afaneca.marvelchallenge.data.remote.entity
 
 import androidx.annotation.Keep
-import com.afaneca.marvelchallenge.domain.model.Character
-import com.afaneca.marvelchallenge.domain.model.CharacterPage
+import com.afaneca.marvelchallenge.domain.model.MarvelCharacter
 import com.google.gson.annotations.SerializedName
 
 @Keep
@@ -16,13 +15,13 @@ data class CharacterEntity(
     @SerializedName("thumbnail")
     val thumbnail: CharacterThumbnailEntity?,
     @SerializedName("comics")
-    val comics: List<CharacterContentEntity>,
+    val comics: CharacterContentEntity,
     @SerializedName("series")
-    val series: List<CharacterContentEntity>,
+    val series: CharacterContentEntity,
     @SerializedName("stories")
-    val stories: List<CharacterContentEntity>,
+    val stories: CharacterContentEntity,
     @SerializedName("events")
-    val events: List<CharacterContentEntity>
+    val events: CharacterContentEntity
 )
 
 @Keep
@@ -33,13 +32,13 @@ data class CharacterThumbnailEntity(
     val extension: String,
 )
 
-fun CharacterEntity.mapToDomain() = Character(
+fun CharacterEntity.mapToDomain() = MarvelCharacter(
     id = id,
     name = name,
     description = description,
     thumbnailUrl = "${thumbnail?.path}.${thumbnail?.extension}",
-    comics = comics.map { comic -> comic.mapToDomain() },
-    series = series.map { series -> series.mapToDomain() },
-    stories = stories.map { stories -> stories.mapToDomain() },
-    events = events.map { events -> events.mapToDomain() },
+    comics = comics.items.map { comic -> comic.mapToDomain() },
+    series = series.items.map { series -> series.mapToDomain() },
+    stories = stories.items.map { stories -> stories.mapToDomain() },
+    events = events.items.map { events -> events.mapToDomain() },
 )

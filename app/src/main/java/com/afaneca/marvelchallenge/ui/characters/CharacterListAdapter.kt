@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.afaneca.marvelchallenge.databinding.AdapterCharacterItemBinding
 import com.afaneca.marvelchallenge.ui.model.CharacterUiModel
+import com.afaneca.marvelchallenge.ui.normalizeUrlToHttps
 import com.afaneca.marvelchallenge.ui.utils.ImageLoader
 
 class CharacterListAdapter(private val onItemClick: (item: CharacterUiModel) -> Unit) :
@@ -45,7 +46,7 @@ class CharacterListAdapter(private val onItemClick: (item: CharacterUiModel) -> 
             binding.root.setOnClickListener { onItemClick(item) }
             binding.tvCharacter.text = item.name
             with(binding.ivCharacter) {
-                ImageLoader.loadImageIntoView(context, item.imgUrl ?: "", this)
+                ImageLoader.loadImageIntoView(context, item.imgUrl?.normalizeUrlToHttps() ?: "", this)
             }
         }
     }

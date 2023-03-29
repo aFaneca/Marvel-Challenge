@@ -3,7 +3,11 @@ package com.afaneca.marvelchallenge.di
 import com.afaneca.marvelchallenge.BuildConfig
 import com.afaneca.marvelchallenge.common.AppDispatchers
 import com.afaneca.marvelchallenge.common.Constants
+import com.afaneca.marvelchallenge.data.remote.ApiMarvelRemoteDataSource
 import com.afaneca.marvelchallenge.data.remote.MarvelApi
+import com.afaneca.marvelchallenge.data.remote.MarvelRemoteDataSource
+import com.afaneca.marvelchallenge.data.repository.LiveCharacterRepository
+import com.afaneca.marvelchallenge.domain.repository.CharacterRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,14 +33,24 @@ object AppModule {
         if (BuildConfig.DEBUG) {
             logging.setLevel(HttpLoggingInterceptor.Level.BODY)
         } else logging.setLevel(HttpLoggingInterceptor.Level.NONE)
-        return OkHttpClient.Builder().addInterceptor(logging).addNetworkInterceptor { chain ->
-            var request = chain.request()
-            val url = request.url.newBuilder()
-                .addQueryParameter("apikey", BuildConfig.MARVEL_API_PUBLIC_KEY).build()
-
-            request = request.newBuilder().url(url).build()
-            chain.proceed(request)
-        }.build()
+        return OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                // Inject "apikey" param into every request
+                val url = chain
+                    .request()
+                    .url
+                    .newBuilder()
+                    .addQueryParameter("apikey", BuildConfig.MARVEL_API_PUBLIC_KEY)
+                    .build()
+                chain.proceed(chain.request().newBuilder().url(url).build())
+            }.addInterceptor { chain ->
+                // Inject "referer" header into every outgoing request
+                chain.proceed(chain.request().newBuilder().also {
+                    it.addHeader("referer", Constants.API_REFERER_DOMAIN)
+                }.build())
+            }
+            .addInterceptor(logging)
+            .build()
     }
 
     @Provides
@@ -48,13 +62,22 @@ object AppModule {
     //endregion
 
     //region Repositories
+    @Provides
+    @Singleton
+    fun provideCharacterRepository(
+        remoteDataSource: MarvelRemoteDataSource,
+    ): CharacterRepository = LiveCharacterRepository(remoteDataSource)
     //endregion
 
     //region DB
     //endregion
 
     //region Data Sources
-
+    @Provides
+    @Singleton
+    fun provideMarvelRemoteDataSource(
+        marvelApi: MarvelApi
+    ): MarvelRemoteDataSource = ApiMarvelRemoteDataSource(marvelApi)
     //endregion
 
     //region misc

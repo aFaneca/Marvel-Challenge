@@ -1,6 +1,6 @@
 package com.afaneca.marvelchallenge.domain.model
 
-data class Character(
+data class MarvelCharacter(
     val id: Int,
     val name: String,
     val description: String,

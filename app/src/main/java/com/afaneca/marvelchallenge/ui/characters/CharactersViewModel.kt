@@ -1,18 +1,24 @@
 package com.afaneca.marvelchallenge.ui.characters
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.afaneca.marvelchallenge.common.AppDispatchers
+import com.afaneca.marvelchallenge.common.Resource
+import com.afaneca.marvelchallenge.domain.model.CharacterPage
+import com.afaneca.marvelchallenge.domain.usecase.GetCharactersUseCase
 import com.afaneca.marvelchallenge.ui.model.CharacterUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CharactersViewModel @Inject constructor(
     private val appDispatchers: AppDispatchers,
+    private val getCharactersUseCase: GetCharactersUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CharacterListState())
@@ -27,53 +33,58 @@ class CharactersViewModel @Inject constructor(
      * If [searchQuery] is null, will assume filters are not being applied.
      */
     private fun getCharacters(searchQuery: String? = null) {
-        // TODO: replace mocked with real data
+        viewModelScope.launch(appDispatchers.IO) {
+            getCharactersUseCase(_state.value.page, searchQuery)
+                .onEach { result ->
+                    when (result) {
+                        is Resource.Success -> handleGetCharactersSuccess(result.data)
+                        is Resource.Error -> handleGetCharactersError(result.message)
+                        is Resource.Loading -> handleGetCharactersLoading()
+                    }
+                }.launchIn(viewModelScope)
+        }
+    }
+
+    private fun handleGetCharactersSuccess(data: CharacterPage?) {
+        val pageData = data?.list?.map { item ->
+            CharacterUiModel(
+                item.id,
+                item.name,
+                item.thumbnailUrl
+            )
+        }
+
+        // If new page is not empty, append items to list and notify UI
+        if (!pageData.isNullOrEmpty()) {
+            _state.value = _state.value.copy(
+                characterList = _state.value.characterList?.plus(pageData)
+                    ?: pageData,
+                isLoading = false,
+                isLoadingFromPagination = false,
+                error = null,
+                hasReachedPaginationEnd = data.hasReachedPaginationEnd
+            )
+        }
+    }
+
+
+    private fun handleGetCharactersLoading() {
+        with(state.value) {
+            if (characterList.isNullOrEmpty()) {
+                // First load
+                _state.value = copy(isLoading = true, error = null)
+            } else {
+                // Pagination loading
+                _state.value = copy(isLoadingFromPagination = true)
+            }
+        }
+    }
+
+    private fun handleGetCharactersError(errorMessage: String?) {
         _state.value = _state.value.copy(
-            characterList = listOf(
-                CharacterUiModel(
-                    "1",
-                    "Name 1",
-                    "https://i.annihil.us/u/prod/marvel/i/mg/9/50/4ce18691cbf04.jpg"
-                ),
-                CharacterUiModel(
-                    "2",
-                    "Name 2",
-                    "https://i.annihil.us/u/prod/marvel/i/mg/9/50/4ce18691cbf04.jpg"
-                ),
-                CharacterUiModel(
-                    "3",
-                    "Name 3",
-                    "https://i.annihil.us/u/prod/marvel/i/mg/9/50/4ce18691cbf04.jpg"
-                ),
-                CharacterUiModel(
-                    "4",
-                    "Name 4",
-                    "https://i.annihil.us/u/prod/marvel/i/mg/9/50/4ce18691cbf04.jpg"
-                ),
-                CharacterUiModel(
-                    "5",
-                    "Name 5",
-                    "https://i.annihil.us/u/prod/marvel/i/mg/9/50/4ce18691cbf04.jpg"
-                ),
-                CharacterUiModel(
-                    "6",
-                    "Name 6",
-                    "https://i.annihil.us/u/prod/marvel/i/mg/9/50/4ce18691cbf04.jpg"
-                ),
-                CharacterUiModel(
-                    "7",
-                    "Name 7",
-                    "https://i.annihil.us/u/prod/marvel/i/mg/9/50/4ce18691cbf04.jpg"
-                ),
-                CharacterUiModel(
-                    "8",
-                    "Name 8",
-                    "https://i.annihil.us/u/prod/marvel/i/mg/9/50/4ce18691cbf04.jpg"
-                ),
-            ),
             isLoading = false,
             isLoadingFromPagination = false,
-            error = null,
+            error = errorMessage
         )
     }
 }

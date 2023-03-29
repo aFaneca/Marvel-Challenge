@@ -13,8 +13,9 @@ object ImageLoader {
     fun loadImageIntoView(context: Context, url: String, view: ImageView) {
         Glide.with(context)
             .load(url)
+            .thumbnail(0.1f)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .placeholder(R.drawable.ic_dashboard_black_24dp) // TODO: set placeholder
+            .placeholder(R.drawable.ic_icon)
             .into(view)
     }
 }
