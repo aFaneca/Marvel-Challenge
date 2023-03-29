@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="bottom_navigation_background">#12FFFFFF</color>
-    <color name="bottom_navigation_icon_color">#B8A8A8</color>
-    <color name="bottom_navigation_icon_color_selected">#FFFFFF</color>
-    <color name="app_color_background">#181818</color>
-    <color name="search_view_background_color">#12FFFFFF</color>
+    <color name="bottom_navigation_background">@color/bluish_grey</color>
+    <color name="bottom_navigation_icon_color">@color/washed_pink</color>
+    <color name="bottom_navigation_icon_color_selected">@color/white</color>
+    <color name="app_color_background">@color/brownish_black</color>
+    <color name="search_view_background_color">@color/bluish_grey</color>
 </resources>
