@@ -5,8 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:paddingTop="?attr/actionBarSize">
+    android:animateLayoutChanges="true">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_top_error"
@@ -15,8 +14,8 @@
         android:backgroundTint="@android:color/holo_red_dark"
         android:orientation="horizontal"
         android:visibility="gone"
-        app:cardElevation="10dp"
         app:cardCornerRadius="0dp"
+        app:cardElevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -49,10 +48,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
-        app:elevation="0dp"
-        app:itemIconTint="@drawable/bottom_nav_icon_selector"
         android:background="@drawable/bottom_nav_background"
         android:backgroundTint="@color/bottom_navigation_background"
+        app:elevation="0dp"
+        app:itemIconTint="@drawable/bottom_nav_icon_selector"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

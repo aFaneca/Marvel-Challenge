@@ -67,7 +67,6 @@ class CharactersViewModel @Inject constructor(
         }
     }
 
-
     private fun handleGetCharactersLoading() {
         with(state.value) {
             if (characterList.isNullOrEmpty()) {
@@ -87,4 +86,29 @@ class CharactersViewModel @Inject constructor(
             error = errorMessage
         )
     }
+
+    private fun resetListState() {
+        _state.value =
+            _state.value.copy(characterList = null, page = 0, hasReachedPaginationEnd = false)
+    }
+
+    private fun incrementPageNumber() {
+        with(_state.value) {
+            _state.value = this.copy(page = this.page + 1)
+        }
+    }
+
+    fun requestNextPage() {
+        with(state.value) {
+            if (hasReachedPaginationEnd || isLoadingResults()) return
+            // increment page number
+            incrementPageNumber()
+
+            // get more items
+            getCharacters(searchQuery)
+        }
+    }
+
+    private fun isLoadingResults(): Boolean =
+        with(_state.value) { isLoading || isLoadingFromPagination }
 }

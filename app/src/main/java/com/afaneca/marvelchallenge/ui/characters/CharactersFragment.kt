@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.afaneca.marvelchallenge.MainActivity
 import com.afaneca.marvelchallenge.databinding.FragmentCharactersBinding
 import com.afaneca.marvelchallenge.ui.model.CharacterUiModel
+import com.afaneca.marvelchallenge.ui.utils.InfiniteScrollListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -40,7 +41,7 @@ class CharactersFragment : Fragment() {
         _binding = null
     }
 
-    private fun observeState(){
+    private fun observeState() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach { state ->
                 // Loading
@@ -78,6 +79,7 @@ class CharactersFragment : Fragment() {
         (requireActivity() as? MainActivity)?.hideTopError()
         binding.errorView.root.isVisible = false
     }
+
     private fun setupRecyclerView(list: List<CharacterUiModel>) {
         if (binding.rvList.adapter == null) {
             // setup recycler view
@@ -87,7 +89,12 @@ class CharactersFragment : Fragment() {
                 }
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                // TODO - handle infinite scroll
+
+                // handle infinite scrolling
+                addOnScrollListener(InfiniteScrollListener {
+                    // on load more
+                    viewModel.requestNextPage()
+                })
             }
         }
         // update list

@@ -9,7 +9,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_default"
+        android:layout_marginHorizontal="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_default"
         tools:context=".ui.characters.CharactersFragment">
 
         <TextView
@@ -41,21 +42,21 @@
             android:background="@drawable/search_view_bg"
             android:elevation="2dp"
             app:iconifiedByDefault="false"
-            app:queryHint="@string/search_view_query_hint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_headline" />
+            app:layout_constraintTop_toBottomOf="@id/tv_headline"
+            app:queryHint="@string/search_view_query_hint" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constrainedHeight="true"
-            app:layout_constraintHeight_default="wrap"
             android:layout_marginTop="@dimen/margin_half"
+            app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toTopOf="@id/pb_pagination_loading"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_default="wrap"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sv_search"
             tools:itemCount="10"
@@ -70,7 +71,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sv_search"
             tools:visibility="visible" />
 
         <include
@@ -80,17 +81,18 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/sv_search" />
+
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/pb_pagination_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_half"
+            android:indeterminate="true"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:indeterminate="true"
             tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
