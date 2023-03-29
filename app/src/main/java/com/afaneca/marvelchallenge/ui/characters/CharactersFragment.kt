@@ -83,11 +83,11 @@ class CharactersFragment : Fragment() {
             // setup recycler view
             binding.rvList.apply {
                 adapter = CharacterListAdapter() {
-                    // TOOD - handle item click
+                    // TODO - handle item click
                 }
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                // TODO - handle inifinite scroll
+                // TODO - handle infinite scroll
             }
         }
         // update list

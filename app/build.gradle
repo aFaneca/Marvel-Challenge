@@ -6,6 +6,12 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
+// Scan secret.properties file
+def secretPropertiesFile = rootProject.file("secret.properties")
+def secretProperties = new Properties()
+secretProperties.load(new FileInputStream(secretPropertiesFile))
+def marvelApiKey = secretProperties['marvelApi.publicKey']
+
 android {
     namespace 'com.afaneca.marvelchallenge'
     compileSdk 33
@@ -17,6 +23,7 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField "String", "MARVEL_API_PUBLIC_KEY", marvelApiKey
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

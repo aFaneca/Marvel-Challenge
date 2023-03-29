@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(null)
         setContentView(binding.root)
         setupBottomNav()
+        binding.navView.setItemIconTintList(null);
     }
 
     private fun getNavController(): NavController {
