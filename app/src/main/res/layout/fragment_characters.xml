@@ -83,6 +83,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sv_search" />
 
+        <include
+            android:id="@+id/empty_view"
+            layout="@layout/include_empty_view"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sv_search" />
+
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/pb_pagination_loading"
             android:layout_width="wrap_content"
@@ -93,6 +102,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_reset_search"
+            style="@style/ThemeOverlay.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_half"
+            android:text="@string/reset_search"
+            android:textColor="?colorSecondaryVariant"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/sv_search"
+            app:layout_constraintEnd_toEndOf="@+id/sv_search"
             tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

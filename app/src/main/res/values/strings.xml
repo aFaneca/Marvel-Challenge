@@ -5,4 +5,6 @@
     <string name="title_details">Details</string>
     <string name="characters_top_headline">Avengers,\nAssemble!</string>
     <string name="search_view_query_hint">Search</string>
+    <string name="reset_search">Reset search</string>
+    <string name="empty_view_text">We couldn\'t find what you were looking for :(</string>
 </resources>

@@ -34,35 +34,36 @@ class CharactersViewModel @Inject constructor(
      */
     private fun getCharacters(searchQuery: String? = null) {
         viewModelScope.launch(appDispatchers.IO) {
-            getCharactersUseCase(_state.value.page, searchQuery)
-                .onEach { result ->
-                    when (result) {
-                        is Resource.Success -> handleGetCharactersSuccess(result.data)
-                        is Resource.Error -> handleGetCharactersError(result.message)
-                        is Resource.Loading -> handleGetCharactersLoading()
-                    }
-                }.launchIn(viewModelScope)
+            getCharactersUseCase(_state.value.page, searchQuery).onEach { result ->
+                when (result) {
+                    is Resource.Success -> handleGetCharactersSuccess(result.data)
+                    is Resource.Error -> handleGetCharactersError(result.message)
+                    is Resource.Loading -> handleGetCharactersLoading()
+                }
+            }.launchIn(viewModelScope)
         }
     }
 
     private fun handleGetCharactersSuccess(data: CharacterPage?) {
         val pageData = data?.list?.map { item ->
             CharacterUiModel(
-                item.id,
-                item.name,
-                item.thumbnailUrl
+                item.id, item.name, item.thumbnailUrl
             )
         }
 
         // If new page is not empty, append items to list and notify UI
         if (!pageData.isNullOrEmpty()) {
             _state.value = _state.value.copy(
-                characterList = _state.value.characterList?.plus(pageData)
-                    ?: pageData,
+                characterList = _state.value.characterList?.plus(pageData) ?: pageData,
                 isLoading = false,
                 isLoadingFromPagination = false,
                 error = null,
                 hasReachedPaginationEnd = data.hasReachedPaginationEnd
+            )
+        } else {
+            _state.value = _state.value.copy(
+                isLoading = false,
+                isLoadingFromPagination = false
             )
         }
     }
@@ -81,15 +82,17 @@ class CharactersViewModel @Inject constructor(
 
     private fun handleGetCharactersError(errorMessage: String?) {
         _state.value = _state.value.copy(
-            isLoading = false,
-            isLoadingFromPagination = false,
-            error = errorMessage
+            isLoading = false, isLoadingFromPagination = false, error = errorMessage
         )
     }
 
-    private fun resetListState() {
-        _state.value =
-            _state.value.copy(characterList = null, page = 0, hasReachedPaginationEnd = false)
+    private fun resetListState(newSearchQuery: String?) {
+        _state.value = _state.value.copy(
+            characterList = null,
+            page = 0,
+            hasReachedPaginationEnd = false,
+            searchQuery = newSearchQuery
+        )
     }
 
     private fun incrementPageNumber() {
@@ -98,9 +101,15 @@ class CharactersViewModel @Inject constructor(
         }
     }
 
+    private fun isLoadingResults(): Boolean =
+        with(_state.value) { isLoading || isLoadingFromPagination }
+
     fun requestNextPage() {
         with(state.value) {
-            if (hasReachedPaginationEnd || isLoadingResults()) return
+            if (hasReachedPaginationEnd
+                || isLoadingResults()
+                || _state.value.characterList.isNullOrEmpty()
+            ) return
             // increment page number
             incrementPageNumber()
 
@@ -109,6 +118,8 @@ class CharactersViewModel @Inject constructor(
         }
     }
 
-    private fun isLoadingResults(): Boolean =
-        with(_state.value) { isLoading || isLoadingFromPagination }
+    fun onSearchInputSubmitted(query: String?) {
+        resetListState(newSearchQuery = query)
+        getCharacters(query)
+    }
 }
