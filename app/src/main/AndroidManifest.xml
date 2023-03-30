@@ -13,17 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MarvelChallenge"
         tools:targetApi="31">
-        <activity
-            android:name=".MainActivity"
+        <activity android:name=".ui.splash.SplashActivity"
             android:exported="true"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/app_name">
+            android:theme="@style/Theme.Splash"
+            android:launchMode="singleInstance"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

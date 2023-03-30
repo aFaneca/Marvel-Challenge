@@ -7,4 +7,5 @@
     <string name="search_view_query_hint">Search</string>
     <string name="reset_search">Reset search</string>
     <string name="empty_view_text">We couldn\'t find what you were looking for :(</string>
+    <string name="splash_copyright_notice">© Marvel %d - All rights reserved</string>
 </resources>
