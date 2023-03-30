@@ -77,6 +77,8 @@
         <include
             android:id="@+id/error_view"
             layout="@layout/include_error_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -86,6 +88,8 @@
         <include
             android:id="@+id/empty_view"
             layout="@layout/include_empty_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

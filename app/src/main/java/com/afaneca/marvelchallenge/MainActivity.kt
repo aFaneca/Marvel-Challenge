@@ -5,10 +5,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.afaneca.marvelchallenge.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(null)
         setContentView(binding.root)
         setupBottomNav()
-        binding.navView.setItemIconTintList(null);
+        binding.navView.itemIconTintList = null
     }
 
     private fun getNavController(): NavController {

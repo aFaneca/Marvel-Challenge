@@ -46,6 +46,7 @@ class CharactersFragment : Fragment() {
         binding.svSearch.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.onSearchInputSubmitted(query)
+                binding.svSearch.clearFocus()
                 return true
             }
 
@@ -97,7 +98,7 @@ class CharactersFragment : Fragment() {
                     // if desired visibility attr is different from current, change view state (with transition animation)
                     if (desiredResetSearchVisibility != visibility)
                         setVisibilityWithAnimation(
-                            parentView = binding.root,
+                            parentView = binding.root as ViewGroup,
                             shouldBecomeVisible = desiredResetSearchVisibility == View.VISIBLE
                         )
                 }
