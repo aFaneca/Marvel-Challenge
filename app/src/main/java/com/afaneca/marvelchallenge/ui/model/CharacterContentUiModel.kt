@@ -1,10 +1,8 @@
 package com.afaneca.marvelchallenge.ui.model
 
-
-data class CharacterUiModel(
-    val id: Int,
+data class CharacterContentUiModel(
     val name: String,
-    val imgUrl: String?,
+    val imgUrl: String,
+    val ctaUrl: String?,
     val description: String?,
 )
-

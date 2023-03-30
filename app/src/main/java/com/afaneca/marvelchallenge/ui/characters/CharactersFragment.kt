@@ -11,11 +11,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.afaneca.marvelchallenge.MainActivity
 import com.afaneca.marvelchallenge.databinding.FragmentCharactersBinding
 import com.afaneca.marvelchallenge.ui.hideSoftKeyboard
 import com.afaneca.marvelchallenge.ui.model.CharacterUiModel
+import com.afaneca.marvelchallenge.ui.safeNavigate
 import com.afaneca.marvelchallenge.ui.utils.InfiniteScrollListener
 import com.afaneca.marvelchallenge.ui.utils.setVisibilityWithAnimation
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,11 +38,13 @@ class CharactersFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCharactersBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupSearchView()
         observeState()
-
-        return binding.root
     }
 
     private fun setupSearchView() {
@@ -133,8 +138,12 @@ class CharactersFragment : Fragment() {
         if (binding.rvList.adapter == null) {
             // setup recycler view
             binding.rvList.apply {
-                adapter = CharacterListAdapter() {
-                    // TODO - handle item click
+                adapter = CharacterListAdapter() { character ->
+                    goToDetails(character)
+                }.also {
+                    // Restore recycler state only when adapter is not empty
+                    it.stateRestorationPolicy =
+                        RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
                 }
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -147,6 +156,16 @@ class CharactersFragment : Fragment() {
             }
         }
         // update list
-        (binding.rvList.adapter as CharacterListAdapter).submitList(list)
+        (binding.rvList.adapter as? CharacterListAdapter)?.submitList(list)
+    }
+
+    private fun goToDetails(character: CharacterUiModel) {
+        val action = CharactersFragmentDirections.actionNavigationCharactersToNavigationDetails(
+            id = character.id,
+            name = character.name,
+            description = character.description ?: "",
+            imgUrl = character.imgUrl ?: ""
+        )
+        findNavController().safeNavigate(action)
     }
 }

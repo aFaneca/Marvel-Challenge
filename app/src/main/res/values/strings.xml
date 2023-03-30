@@ -8,4 +8,14 @@
     <string name="reset_search">Reset search</string>
     <string name="empty_view_text">We couldn\'t find what you were looking for :(</string>
     <string name="splash_copyright_notice">© Marvel %d - All rights reserved</string>
+    <string name="share">Share</string>
+    <string name="close">Close</string>
+    <string name="overview">Overview</string>
+    <string name="character_name_unknown">(?)</string>
+    <string name="character_description_unknown">This character is still a mystery to us…</string>
+    <string name="details_share_message">Do you know %s? Here\'s an overview: %s</string>
+    <string name="comics">Comics</string>
+    <string name="events">Events</string>
+    <string name="stories">Stories</string>
+    <string name="see_all">See all</string>
 </resources>

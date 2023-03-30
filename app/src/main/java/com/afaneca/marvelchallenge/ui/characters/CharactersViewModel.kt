@@ -47,7 +47,7 @@ class CharactersViewModel @Inject constructor(
     private fun handleGetCharactersSuccess(data: CharacterPage?) {
         val pageData = data?.list?.map { item ->
             CharacterUiModel(
-                item.id, item.name, item.thumbnailUrl
+                item.id, item.name, item.thumbnailUrl, item.description
             )
         }
 

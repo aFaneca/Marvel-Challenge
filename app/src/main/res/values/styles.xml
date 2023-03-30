@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Details.Headline" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">27sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingMultiplier">1.19</item>
+    </style>
+
+</resources>

@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:text="@string/characters_top_headline"
             android:textSize="36sp"
+            android:lineSpacingMultiplier="1.19"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/iv_logo"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +44,6 @@
             android:elevation="2dp"
             app:iconifiedByDefault="false"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_headline"
             app:queryHint="@string/search_view_query_hint" />
