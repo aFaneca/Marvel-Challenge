@@ -15,14 +15,26 @@ class GetCharactersUseCase @Inject constructor(
         searchQuery: String? = null
     ): Flow<Resource<CharacterPage>> = flow {
         emit(Resource.Loading())
-        when (val response = characterRepository.getCharacters(page, searchQuery)) {
+        when (val response = characterRepository.getCharactersFromRemote(page, searchQuery)) {
             is Resource.Success -> {
-                response.data?.let {
-                    emit(Resource.Success(it))
-                } ?: run { emit(Resource.Error("")) }
+                // Cache results to local data source
+                response.data?.list?.let {
+                    characterRepository.insertCharactersIntoLocalCache(it, searchQuery, page)
+                }
+
+                // Fetch final list from local data source (single source of truth)
+                val cachedPage = characterRepository.getCharactersFromLocalCache(page, searchQuery)
+                emit(Resource.Success(cachedPage))
             }
             is Resource.Error -> {
-                emit(Resource.Error(response.message ?: ""))
+                // In case of failure (e.g. no internet), return the cached version, if it exists
+                val cachedPage = characterRepository.getCharactersFromLocalCache(page, searchQuery)
+                if (cachedPage.list.isEmpty()) {
+                    // If cached version doesn't exist, emit error
+                    emit(Resource.Error(response.message ?: ""))
+                } else {
+                    emit(Resource.Success(cachedPage))
+                }
             }
             else -> {}
         }

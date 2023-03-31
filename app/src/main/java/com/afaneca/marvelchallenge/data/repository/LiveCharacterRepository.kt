@@ -2,17 +2,26 @@ package com.afaneca.marvelchallenge.data.repository
 
 import com.afaneca.marvelchallenge.common.Constants.DEFAULT_PAGE_SIZE
 import com.afaneca.marvelchallenge.common.Resource
+import com.afaneca.marvelchallenge.data.local.MarvelLocalDataSource
+import com.afaneca.marvelchallenge.data.local.db.character.CharacterDbEntity
 import com.afaneca.marvelchallenge.data.remote.MarvelRemoteDataSource
 import com.afaneca.marvelchallenge.data.remote.entity.mapToDomain
 import com.afaneca.marvelchallenge.domain.model.CharacterContent
 import com.afaneca.marvelchallenge.domain.model.CharacterPage
+import com.afaneca.marvelchallenge.domain.model.MarvelCharacter
 import com.afaneca.marvelchallenge.domain.repository.CharacterRepository
 import javax.inject.Inject
 
 class LiveCharacterRepository @Inject constructor(
+    private val localDataSource: MarvelLocalDataSource,
     private val remoteDataSource: MarvelRemoteDataSource,
 ) : CharacterRepository {
-    override suspend fun getCharacters(page: Int, searchQuery: String?): Resource<CharacterPage> {
+
+    //region characters
+    override suspend fun getCharactersFromRemote(
+        page: Int,
+        searchQuery: String?
+    ): Resource<CharacterPage> {
         return try {
             val itemsOffset = page * DEFAULT_PAGE_SIZE
             val response =
@@ -40,6 +49,37 @@ class LiveCharacterRepository @Inject constructor(
         }
     }
 
+    override suspend fun getCharactersFromLocalCache(
+        page: Int,
+        searchQuery: String?
+    ): CharacterPage {
+        val results = localDataSource.getAllCharacterResultsInPage(page, searchQuery)
+        return CharacterPage(
+            list = results.map { MarvelCharacter(it.id, it.name, it.description, it.thumbnailUrl) },
+            hasReachedPaginationEnd = false
+        )
+    }
+
+    override suspend fun insertCharactersIntoLocalCache(
+        list: List<MarvelCharacter>,
+        query: String?,
+        page: Int
+    ) {
+        localDataSource.insertAllCharacters(list.map {
+            CharacterDbEntity(
+                it.id,
+                it.name,
+                it.description,
+                it.thumbnailUrl,
+                page,
+                query ?: ""
+            )
+        })
+    }
+    //endregion
+
+    //region comics
+
     override suspend fun getCharacterComics(characterId: Int): Resource<List<CharacterContent>> {
         return try {
             val response = remoteDataSource.getCharacterComics(characterId)
@@ -52,7 +92,9 @@ class LiveCharacterRepository @Inject constructor(
             Resource.Error(e.localizedMessage ?: "")
         }
     }
+    //endregion
 
+    //region events
     override suspend fun getCharacterEvents(characterId: Int): Resource<List<CharacterContent>> {
         return try {
             val response = remoteDataSource.getCharacterEvents(characterId)
@@ -65,7 +107,9 @@ class LiveCharacterRepository @Inject constructor(
             Resource.Error(e.localizedMessage ?: "")
         }
     }
+    //endregion
 
+    //region stories
     override suspend fun getCharacterStories(characterId: Int): Resource<List<CharacterContent>> {
         return try {
             val response = remoteDataSource.getCharacterStories(characterId)
@@ -78,7 +122,9 @@ class LiveCharacterRepository @Inject constructor(
             Resource.Error(e.localizedMessage ?: "")
         }
     }
+    //endregion
 
+    //region series
     override suspend fun getCharacterSeries(characterId: Int): Resource<List<CharacterContent>> {
         return try {
             val response = remoteDataSource.getCharacterSeries(characterId)
@@ -91,4 +137,5 @@ class LiveCharacterRepository @Inject constructor(
             Resource.Error(e.localizedMessage ?: "")
         }
     }
+    //endregion
 }
