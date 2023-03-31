@@ -14,13 +14,11 @@
         tools:context=".ui.characters.CharactersFragment">
 
         <TextView
-            android:id="@+id/tv_headline"
+            android:id="@+id/tv_header"
+            style="@style/App.Header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/characters_top_headline"
-            android:textSize="36sp"
-            android:lineSpacingMultiplier="1.19"
-            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/iv_logo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +31,7 @@
             android:contentDescription="@null"
             android:src="@drawable/marvel_logo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_headline" />
+            app:layout_constraintTop_toTopOf="@+id/tv_header" />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/sv_search"
@@ -45,7 +43,7 @@
             app:iconifiedByDefault="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_headline"
+            app:layout_constraintTop_toBottomOf="@id/tv_header"
             app:queryHint="@string/search_view_query_hint" />
 
         <androidx.recyclerview.widget.RecyclerView

@@ -3,11 +3,15 @@ package com.afaneca.marvelchallenge.di
 import com.afaneca.marvelchallenge.BuildConfig
 import com.afaneca.marvelchallenge.common.AppDispatchers
 import com.afaneca.marvelchallenge.common.Constants
+import com.afaneca.marvelchallenge.data.local.MockTopSellingLocalDataSource
+import com.afaneca.marvelchallenge.data.local.TopSellingLocalDataSource
 import com.afaneca.marvelchallenge.data.remote.ApiMarvelRemoteDataSource
 import com.afaneca.marvelchallenge.data.remote.MarvelApi
 import com.afaneca.marvelchallenge.data.remote.MarvelRemoteDataSource
 import com.afaneca.marvelchallenge.data.repository.LiveCharacterRepository
+import com.afaneca.marvelchallenge.data.repository.LiveTopSellingRepository
 import com.afaneca.marvelchallenge.domain.repository.CharacterRepository
+import com.afaneca.marvelchallenge.domain.repository.TopSellingRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -67,6 +71,12 @@ object AppModule {
     fun provideCharacterRepository(
         remoteDataSource: MarvelRemoteDataSource,
     ): CharacterRepository = LiveCharacterRepository(remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun provideTopSellingRepository(
+        localDataSource: TopSellingLocalDataSource,
+    ): TopSellingRepository = LiveTopSellingRepository(localDataSource)
     //endregion
 
     //region DB
@@ -78,6 +88,11 @@ object AppModule {
     fun provideMarvelRemoteDataSource(
         marvelApi: MarvelApi
     ): MarvelRemoteDataSource = ApiMarvelRemoteDataSource(marvelApi)
+
+    @Provides
+    @Singleton
+    fun provideTopSellingLocalDataSource(): TopSellingLocalDataSource =
+        MockTopSellingLocalDataSource()
     //endregion
 
     //region misc

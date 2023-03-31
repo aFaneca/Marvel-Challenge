@@ -21,4 +21,9 @@
     <string name="stories">Stories</string>
     <string name="see_all">See all</string>
     <string name="series">Series</string>
+    <string name="about_this_app_headline">About this app</string>
+    <string name="about_top_note">Charismatic, agile, strong, united, passionate and with a lot of wisdom, we are all Heroes in our own way.</string>
+    <string name="about_overview_text">In fact, what makes us heroes are not supernatural forces, but the small gestures and attitudes that help to improve the daily lives of all of us and those around us. Heroes from December 8th to 11th at Parque das Nações – Lisbon.</string>
+    <string name="top_selling_items_label">Top selling items</string>
+    <string name="top_selling_items_text">Some things you might like...</string>
 </resources>
