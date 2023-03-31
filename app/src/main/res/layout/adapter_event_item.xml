@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_default">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_cover"
@@ -13,6 +14,7 @@
         app:cardCornerRadius="@dimen/default_border_radius"
         app:cardElevation="0dp"
         app:cardForegroundColor="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="@id/tv_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -28,9 +30,9 @@
         android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_half"
         android:ellipsize="end"
-        android:maxLines="3"
-        android:paddingTop="@dimen/margin_small"
+        android:maxLines="1"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

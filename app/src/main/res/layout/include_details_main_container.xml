@@ -40,22 +40,29 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_double"
             android:text="@string/comics"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/tv_description" />
+            app:layout_constraintTop_toBottomOf="@id/tv_description"
+            tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_comics"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_default"
+            android:clipToPadding="false"
             android:orientation="horizontal"
+            android:paddingEnd="@dimen/margin_default"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_comics_label"
+            tools:ignore="RtlSymmetry"
             tools:itemCount="5"
-            tools:listitem="@layout/adapter_comic_item" />
+            tools:listitem="@layout/adapter_comic_item"
+            tools:visibility="visible" />
         <!--endregion-->
         <!-- region events-->
         <TextView
@@ -65,9 +72,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_double"
             android:text="@string/events"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/tv_events_see_all_cta"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/rv_comics" />
+            app:layout_constraintTop_toBottomOf="@id/rv_comics"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/tv_events_see_all_cta"
@@ -76,8 +85,10 @@
             android:lineSpacingMultiplier="1.5"
             android:text="@string/see_all"
             android:textSize="16sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/tv_events_label"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_end" />
+            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+            tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_events"
@@ -85,12 +96,14 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_default"
             android:orientation="vertical"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/tv_events_label"
             tools:itemCount="3"
-            tools:listitem="@layout/adapter_event_item" />
+            tools:listitem="@layout/adapter_event_item"
+            tools:visibility="visible" />
         <!--endregion-->
         <!-- region stories-->
         <TextView
@@ -100,9 +113,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_double"
             android:text="@string/stories"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/rv_events" />
+            app:layout_constraintTop_toBottomOf="@id/rv_events"
+            tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_stories"
@@ -110,12 +125,14 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_default"
             android:orientation="vertical"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/tv_stories_label"
             tools:itemCount="3"
-            tools:listitem="@layout/adapter_stories_series_item" />
+            tools:listitem="@layout/adapter_stories_series_item"
+            tools:visibility="visible" />
         <!--endregion-->
         <!-- region series-->
         <TextView
@@ -124,10 +141,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_double"
-            android:text="@string/stories"
+            android:text="@string/series"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@id/rv_stories" />
+            app:layout_constraintTop_toBottomOf="@id/rv_stories"
+            tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_series"
@@ -135,12 +154,14 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_default"
             android:orientation="vertical"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/tv_series_label"
             tools:itemCount="3"
-            tools:listitem="@layout/adapter_stories_series_item" />
+            tools:listitem="@layout/adapter_stories_series_item"
+            tools:visibility="visible" />
         <!--endregion-->
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_start"

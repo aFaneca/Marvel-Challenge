@@ -59,11 +59,13 @@ class CharacterContentAdapter(
                 AdapterComicItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             ComicViewHolder(binding)
         }
+
         ListViewType.Event.id -> {
             val binding =
                 AdapterEventItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             EventViewHolder(binding)
         }
+
         else -> {
             val binding = AdapterStoriesSeriesItemBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -82,11 +84,14 @@ class CharacterContentAdapter(
     inner class ComicViewHolder(private val binding: AdapterComicItemBinding) :
         ViewHolder(binding.root) {
         override fun bind(item: CharacterContentUiModel) {
-            binding.tvName.text = item.name
+            with(binding.tvName) {
+                text =
+                    if (item.name.isNullOrBlank()) context.getString(com.afaneca.marvelchallenge.R.string.general_name_unknown) else item.name
+            }
             with(binding.ivCover) {
                 ImageLoader.loadImageIntoView(
                     context,
-                    item.imgUrl.normalizeUrlToHttps(),
+                    item.imgUrl?.normalizeUrlToHttps() ?: "",
                     this,
                     placeholder = R.drawable.missing_comic
                 )
@@ -97,12 +102,18 @@ class CharacterContentAdapter(
     inner class EventViewHolder(private val binding: AdapterEventItemBinding) :
         ViewHolder(binding.root) {
         override fun bind(item: CharacterContentUiModel) {
-            binding.tvTitle.text = item.name
-            binding.tvDescription.text = item.description
+            with(binding.tvTitle) {
+                text =
+                    if (item.name.isNullOrBlank()) context.getString(R.string.general_name_unknown) else item.name
+            }
+            with(binding.tvDescription) {
+                text =
+                    if (item.description.isNullOrBlank()) context.getString(R.string.general_description_unknown) else item.description
+            }
             with(binding.ivCover) {
                 ImageLoader.loadImageIntoView(
                     context,
-                    item.imgUrl.normalizeUrlToHttps(),
+                    item.imgUrl?.normalizeUrlToHttps() ?: "",
                     this,
                     placeholder = R.drawable.missing_comic
                 )
@@ -113,12 +124,18 @@ class CharacterContentAdapter(
     inner class StorySeriesViewHolder(private val binding: AdapterStoriesSeriesItemBinding) :
         ViewHolder(binding.root) {
         override fun bind(item: CharacterContentUiModel) {
-            binding.tvTitle.text = item.name
-            binding.tvDescription.text = item.description
+            with(binding.tvTitle) {
+                text =
+                    if (item.name.isNullOrBlank()) context.getString(R.string.general_name_unknown) else item.name
+            }
+            with(binding.tvDescription) {
+                text =
+                    if (item.description.isNullOrBlank()) context.getString(R.string.general_description_unknown) else item.description
+            }
             with(binding.ivCover) {
                 ImageLoader.loadImageIntoView(
                     context,
-                    item.imgUrl.normalizeUrlToHttps(),
+                    item.imgUrl?.normalizeUrlToHttps() ?: "",
                     this,
                     placeholder = R.drawable.missing_comic
                 )

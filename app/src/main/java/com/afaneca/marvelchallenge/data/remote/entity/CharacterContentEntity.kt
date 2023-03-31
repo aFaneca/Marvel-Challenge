@@ -6,18 +6,19 @@ import com.google.gson.annotations.SerializedName
 
 @Keep
 data class CharacterContentEntity(
-    @SerializedName("available")
-    val available: Int,
-    @SerializedName("items")
-    val items: List<CharacterContentItemEntity>
+    @SerializedName("id")
+    val id: Int,
+    @SerializedName("title")
+    val title: String?,
+    @SerializedName("description")
+    val description: String?,
+    @SerializedName("thumbnail")
+    val thumbnail: CharacterThumbnailEntity?,
 )
 
-@Keep
-data class CharacterContentItemEntity(
-    @SerializedName("resourceURI")
-    val resourceUri: String?,
-    @SerializedName("name")
-    val name: String?,
+fun CharacterContentEntity.mapToDomain() = CharacterContent(
+    id = id,
+    name = title,
+    description = description,
+    imgUrl = "${thumbnail?.path}.${thumbnail?.extension}"
 )
-
-fun CharacterContentItemEntity.mapToDomain() = CharacterContent(resourceUri, name)

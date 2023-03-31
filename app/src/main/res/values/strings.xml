@@ -12,10 +12,13 @@
     <string name="close">Close</string>
     <string name="overview">Overview</string>
     <string name="character_name_unknown">(?)</string>
+    <string name="general_name_unknown">(?)</string>
     <string name="character_description_unknown">This character is still a mystery to us…</string>
+    <string name="general_description_unknown">We don\'t know what to say about this one…</string>
     <string name="details_share_message">Do you know %s? Here\'s an overview: %s</string>
     <string name="comics">Comics</string>
     <string name="events">Events</string>
     <string name="stories">Stories</string>
     <string name="see_all">See all</string>
+    <string name="series">Series</string>
 </resources>

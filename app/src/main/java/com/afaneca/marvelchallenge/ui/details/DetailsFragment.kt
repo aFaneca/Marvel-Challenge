@@ -1,11 +1,11 @@
 package com.afaneca.marvelchallenge.ui.details
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -16,10 +16,12 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.afaneca.marvelchallenge.MainActivity
 import com.afaneca.marvelchallenge.R
+import com.afaneca.marvelchallenge.common.Constants
 import com.afaneca.marvelchallenge.databinding.FragmentDetailsBinding
 import com.afaneca.marvelchallenge.ui.model.CharacterContentUiModel
 import com.afaneca.marvelchallenge.ui.normalizeUrlToHttps
 import com.afaneca.marvelchallenge.ui.utils.ImageLoader
+import com.afaneca.marvelchallenge.ui.utils.setVisibilityWithAnimation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -53,11 +55,24 @@ class DetailsFragment : Fragment() {
 
         viewModel.init(args.id, args.name, args.description, args.imgUrl)
         binding.ivClose.setOnClickListener { findNavController().popBackStack() }
+        binding.includeMainContainer.tvEventsSeeAllCta.setOnClickListener {
+            openUrlInBrowser(
+                Constants.EVENTS_SEE_ALL_CTA_URL
+            )
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun openUrlInBrowser(url: String) {
+        val openIntent = Intent().apply {
+            action = Intent.ACTION_VIEW
+            data = Uri.parse(url)
+        }
+        startActivity(openIntent)
     }
 
     private fun openShareIntent(name: String, description: String) {
@@ -104,15 +119,87 @@ class DetailsFragment : Fragment() {
     }
 
     private fun observeStoriesState() {
-        //TODO
+        viewModel.storiesState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { state ->
+                // If list is still loading or an error occurred, we simply don't show this section
+                binding.includeMainContainer.tvStoriesLabel.setVisibilityWithAnimation(
+                    binding.root as ViewGroup, !state.list.isNullOrEmpty()
+                )
+                binding.includeMainContainer.rvStories.setVisibilityWithAnimation(
+                    binding.root as ViewGroup, !state.list.isNullOrEmpty()
+                )
+
+                // Recycler View
+                state.list?.let {
+                    setupContentRecyclerView(
+                        ListViewType.StorySeries,
+                        binding.includeMainContainer.rvStories,
+                        it
+                    )
+                }
+
+                // Error Handling
+                if (!state.error.isNullOrBlank()) {
+                    handleError(state.error)
+                } else hideErrorContainer()
+            }.launchIn(lifecycleScope)
     }
 
     private fun observeSeriesState() {
-        //TODO
+        viewModel.seriesState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { state ->
+                // If list is still loading or an error occurred, we simply don't show this section
+                binding.includeMainContainer.tvSeriesLabel.setVisibilityWithAnimation(
+                    binding.root as ViewGroup, !state.list.isNullOrEmpty()
+                )
+                binding.includeMainContainer.rvSeries.setVisibilityWithAnimation(
+                    binding.root as ViewGroup, !state.list.isNullOrEmpty()
+                )
+
+                // Recycler View
+                state.list?.let {
+                    setupContentRecyclerView(
+                        ListViewType.StorySeries,
+                        binding.includeMainContainer.rvSeries,
+                        it
+                    )
+                }
+
+                // Error Handling
+                if (!state.error.isNullOrBlank()) {
+                    handleError(state.error)
+                } else hideErrorContainer()
+            }.launchIn(lifecycleScope)
     }
 
     private fun observeEventsState() {
-        //TODO
+        viewModel.eventsState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { state ->
+                // If list is still loading or an error occurred, we simply don't show this section
+                binding.includeMainContainer.tvEventsLabel.setVisibilityWithAnimation(
+                    binding.root as ViewGroup, !state.list.isNullOrEmpty()
+                )
+                binding.includeMainContainer.rvEvents.setVisibilityWithAnimation(
+                    binding.root as ViewGroup, !state.list.isNullOrEmpty()
+                )
+                binding.includeMainContainer.tvEventsSeeAllCta.setVisibilityWithAnimation(
+                    binding.root as ViewGroup, !state.list.isNullOrEmpty()
+                )
+
+                // Recycler View
+                state.list?.let {
+                    setupContentRecyclerView(
+                        ListViewType.Event,
+                        binding.includeMainContainer.rvEvents,
+                        it
+                    )
+                }
+
+                // Error Handling
+                if (!state.error.isNullOrBlank()) {
+                    handleError(state.error)
+                } else hideErrorContainer()
+            }.launchIn(lifecycleScope)
     }
 
     private fun handleError(error: String) {
@@ -127,11 +214,21 @@ class DetailsFragment : Fragment() {
         viewModel.comicsState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach { state ->
                 // If list is still loading or an error occurred, we simply don't show this section
-                binding.includeMainContainer.tvComicsLabel.isVisible = !state.list.isNullOrEmpty()
-                binding.includeMainContainer.rvComics.isVisible = !state.list.isNullOrEmpty()
+                binding.includeMainContainer.tvComicsLabel.setVisibilityWithAnimation(
+                    binding.root as ViewGroup, !state.list.isNullOrEmpty()
+                )
+                binding.includeMainContainer.rvComics.setVisibilityWithAnimation(
+                    binding.root as ViewGroup, !state.list.isNullOrEmpty()
+                )
 
                 // Recycler View
-                state.list?.let { setupComicsRecyclerView(it) }
+                state.list?.let {
+                    setupContentRecyclerView(
+                        ListViewType.Comic,
+                        binding.includeMainContainer.rvComics,
+                        it
+                    )
+                }
 
                 // Error Handling
                 if (!state.error.isNullOrBlank()) {
@@ -140,11 +237,16 @@ class DetailsFragment : Fragment() {
             }.launchIn(lifecycleScope)
     }
 
-    private fun setupComicsRecyclerView(dataset: List<CharacterContentUiModel>) {
-        if (binding.includeMainContainer.rvComics.adapter == null) {
+    private fun setupContentRecyclerView(
+        viewType: ListViewType,
+        recyclerView: RecyclerView,
+        dataset: List<CharacterContentUiModel>
+    ) {
+        if (recyclerView.adapter == null) {
             // setup
-            binding.includeMainContainer.rvComics.apply {
-                adapter = CharacterContentAdapter(ListViewType.Comic).also {
+            recyclerView.apply {
+                setHasFixedSize(true)
+                adapter = CharacterContentAdapter(viewType).also {
                     // Restore recycler state only when adapter is not empty
                     it.stateRestorationPolicy =
                         RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
@@ -153,7 +255,7 @@ class DetailsFragment : Fragment() {
         }
 
         // submit data
-        (binding.includeMainContainer.rvComics.adapter as? CharacterContentAdapter)?.submitList(
+        (recyclerView.adapter as? CharacterContentAdapter)?.submitList(
             dataset
         )
     }
