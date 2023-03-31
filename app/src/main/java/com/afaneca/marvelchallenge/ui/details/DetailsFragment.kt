@@ -13,6 +13,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afaneca.marvelchallenge.MainActivity
 import com.afaneca.marvelchallenge.R
@@ -21,7 +22,9 @@ import com.afaneca.marvelchallenge.databinding.FragmentDetailsBinding
 import com.afaneca.marvelchallenge.ui.model.CharacterContentUiModel
 import com.afaneca.marvelchallenge.ui.normalizeUrlToHttps
 import com.afaneca.marvelchallenge.ui.utils.ImageLoader
+import com.afaneca.marvelchallenge.ui.utils.VerticalMarginItemDecoration
 import com.afaneca.marvelchallenge.ui.utils.setVisibilityWithAnimation
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -134,7 +137,7 @@ class DetailsFragment : Fragment() {
                     setupContentRecyclerView(
                         ListViewType.StorySeries,
                         binding.includeMainContainer.rvStories,
-                        it
+                        it, state.list.size > 1
                     )
                 }
 
@@ -161,7 +164,7 @@ class DetailsFragment : Fragment() {
                     setupContentRecyclerView(
                         ListViewType.StorySeries,
                         binding.includeMainContainer.rvSeries,
-                        it
+                        it, state.list.size > 1
                     )
                 }
 
@@ -191,7 +194,7 @@ class DetailsFragment : Fragment() {
                     setupContentRecyclerView(
                         ListViewType.Event,
                         binding.includeMainContainer.rvEvents,
-                        it
+                        it, state.list.size > 1
                     )
                 }
 
@@ -226,7 +229,7 @@ class DetailsFragment : Fragment() {
                     setupContentRecyclerView(
                         ListViewType.Comic,
                         binding.includeMainContainer.rvComics,
-                        it
+                        it, false
                     )
                 }
 
@@ -240,12 +243,19 @@ class DetailsFragment : Fragment() {
     private fun setupContentRecyclerView(
         viewType: ListViewType,
         recyclerView: RecyclerView,
-        dataset: List<CharacterContentUiModel>
+        dataset: List<CharacterContentUiModel>,
+        addDivider: Boolean = false
     ) {
         if (recyclerView.adapter == null) {
             // setup
             recyclerView.apply {
                 setHasFixedSize(true)
+                if (addDivider) {
+                    addItemDecoration(MaterialDividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
+                        isLastItemDecorated = false
+                    })
+                    addItemDecoration(VerticalMarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_default)))
+                }
                 adapter = CharacterContentAdapter(viewType).also {
                     // Restore recycler state only when adapter is not empty
                     it.stateRestorationPolicy =

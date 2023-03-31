@@ -4,25 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/margin_default">
+    android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_cover"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="@dimen/default_border_radius"
         app:cardElevation="0dp"
         app:cardForegroundColor="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="@id/tv_description"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/iv_cover"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:scaleType="fitXY"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
             android:src="@drawable/missing_comic" />
     </com.google.android.material.card.MaterialCardView>
 
@@ -30,14 +30,17 @@
         android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_half"
         android:ellipsize="end"
         android:maxLines="1"
+        android:paddingStart="@dimen/margin_half"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tv_description"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/cv_cover"
-        app:layout_constraintTop_toTopOf="@+id/cv_cover"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="Event title here fdsfds" />
 
     <TextView
@@ -46,8 +49,11 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="2"
+        android:paddingStart="@dimen/margin_half"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/tv_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_title"
         tools:text="Praesent quam eros, iaculis scelerisque et, dapibus sed extra." />
