@@ -3,8 +3,8 @@ package com.afaneca.marvelchallenge.data.repository
 import com.afaneca.marvelchallenge.common.Constants.DEFAULT_PAGE_SIZE
 import com.afaneca.marvelchallenge.common.Resource
 import com.afaneca.marvelchallenge.data.local.MarvelLocalDataSource
-import com.afaneca.marvelchallenge.data.local.db.character.CharacterContentEntity
 import com.afaneca.marvelchallenge.data.local.db.character.CharacterDbEntity
+import com.afaneca.marvelchallenge.data.local.db.content.CharacterContentEntity
 import com.afaneca.marvelchallenge.data.remote.MarvelRemoteDataSource
 import com.afaneca.marvelchallenge.data.remote.entity.mapToDomain
 import com.afaneca.marvelchallenge.domain.model.CharacterContent

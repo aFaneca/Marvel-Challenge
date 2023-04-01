@@ -25,11 +25,11 @@
 
     <TextView
         android:id="@+id/tv_header"
+        style="@style/App.Header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_default"
         android:text="@string/characters_top_headline"
-        android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="@id/iv_logo"
@@ -42,11 +42,11 @@
         android:layout_marginHorizontal="@dimen/margin_default"
         android:background="@drawable/search_view_bg"
         android:elevation="2dp"
-        app:queryBackground="@null"
         app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@id/tv_reset_search"
+        app:queryBackground="@null"
         app:queryHint="@string/search_view_query_hint" />
 
     <TextView
@@ -78,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@id/sv_search"
         tools:itemCount="10"
         tools:listitem="@layout/adapter_character_item"
-        tools:visibility="gone"/>
+        tools:visibility="gone" />
 
     <include
         android:id="@+id/pb_loading"
@@ -110,11 +110,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/sv_search" />
+        app:layout_constraintTop_toBottomOf="@+id/sv_search"
+        tools:visibility="visible" />
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/pb_pagination_loading"

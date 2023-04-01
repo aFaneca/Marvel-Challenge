@@ -1,7 +1,7 @@
 package com.afaneca.marvelchallenge.data.local
 
-import com.afaneca.marvelchallenge.data.local.db.character.CharacterContentEntity
 import com.afaneca.marvelchallenge.data.local.db.character.CharacterDbEntity
+import com.afaneca.marvelchallenge.data.local.db.content.CharacterContentEntity
 
 interface MarvelLocalDataSource {
     sealed class ContentType(val tag: String) {

@@ -10,8 +10,8 @@ import com.afaneca.marvelchallenge.data.local.MockTopSellingLocalDataSource
 import com.afaneca.marvelchallenge.data.local.RoomMarvelLocalDataSource
 import com.afaneca.marvelchallenge.data.local.TopSellingLocalDataSource
 import com.afaneca.marvelchallenge.data.local.db.MarvelDatabase
-import com.afaneca.marvelchallenge.data.local.db.character.CharacterContentDao
 import com.afaneca.marvelchallenge.data.local.db.character.CharacterDao
+import com.afaneca.marvelchallenge.data.local.db.content.CharacterContentDao
 import com.afaneca.marvelchallenge.data.remote.ApiMarvelRemoteDataSource
 import com.afaneca.marvelchallenge.data.remote.MarvelApi
 import com.afaneca.marvelchallenge.data.remote.MarvelRemoteDataSource

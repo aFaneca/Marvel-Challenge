@@ -8,4 +8,11 @@
 
     <dimen name="default_border_radius">16dp</dimen>
     <dimen name="default_character_list_card_height">180dp</dimen>
+
+    <dimen name="font_size_header">36sp</dimen>
+    <dimen name="font_size_bigger">27sp</dimen>
+    <dimen name="font_size_big">20sp</dimen>
+    <dimen name="font_size_regular">18sp</dimen>
+    <dimen name="font_size_small">16sp</dimen>
+    <dimen name="font_size_smallest">14sp</dimen>
 </resources>

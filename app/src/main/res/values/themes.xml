@@ -19,4 +19,6 @@
         <!-- Customize your theme here. -->
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
+
+    <style name="Theme.Splash" parent="Theme.MarvelChallenge" />
 </resources>
