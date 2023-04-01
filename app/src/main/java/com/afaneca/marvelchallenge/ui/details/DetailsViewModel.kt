@@ -167,7 +167,7 @@ class DetailsViewModel @Inject constructor(
     }
 
     //endregion
-    //region stories
+    //region series
     private fun getSeries(id: Int) {
         viewModelScope.launch(appDispatchers.IO) {
             getCharacterSeriesUseCase(id).onEach { result ->
