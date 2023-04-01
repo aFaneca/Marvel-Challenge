@@ -26,9 +26,18 @@ interface CharacterRepository {
     //endregion
 
     //region comics
-    suspend fun getCharacterComics(
+    suspend fun getCharacterComicsFromRemote(
         characterId: Int,
     ): Resource<List<CharacterContent>>
+
+    suspend fun getCharacterComicsFromLocalCache(
+        characterId: Int,
+    ): List<CharacterContent>
+
+    suspend fun insertCharacterComicsIntoLocalCache(
+        characterId: Int,
+        list: List<CharacterContent>
+    )
     //endregion
 
     //region events

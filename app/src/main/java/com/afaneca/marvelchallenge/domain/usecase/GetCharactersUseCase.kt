@@ -20,7 +20,7 @@ class GetCharactersUseCase @Inject constructor(
                 // Cache results to local data source
                 response.data?.list?.let {
                     characterRepository.insertCharactersIntoLocalCache(it, searchQuery, page)
-                }
+                } ?: run { emit(Resource.Error("")) }
 
                 // Fetch final list from local data source (single source of truth)
                 val cachedPage = characterRepository.getCharactersFromLocalCache(page, searchQuery)

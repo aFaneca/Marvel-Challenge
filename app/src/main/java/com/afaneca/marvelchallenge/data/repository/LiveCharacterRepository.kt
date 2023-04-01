@@ -3,6 +3,7 @@ package com.afaneca.marvelchallenge.data.repository
 import com.afaneca.marvelchallenge.common.Constants.DEFAULT_PAGE_SIZE
 import com.afaneca.marvelchallenge.common.Resource
 import com.afaneca.marvelchallenge.data.local.MarvelLocalDataSource
+import com.afaneca.marvelchallenge.data.local.db.character.CharacterContentEntity
 import com.afaneca.marvelchallenge.data.local.db.character.CharacterDbEntity
 import com.afaneca.marvelchallenge.data.remote.MarvelRemoteDataSource
 import com.afaneca.marvelchallenge.data.remote.entity.mapToDomain
@@ -79,8 +80,7 @@ class LiveCharacterRepository @Inject constructor(
     //endregion
 
     //region comics
-
-    override suspend fun getCharacterComics(characterId: Int): Resource<List<CharacterContent>> {
+    override suspend fun getCharacterComicsFromRemote(characterId: Int): Resource<List<CharacterContent>> {
         return try {
             val response = remoteDataSource.getCharacterComics(characterId)
             response.body()?.data?.let {
@@ -91,6 +91,33 @@ class LiveCharacterRepository @Inject constructor(
         } catch (e: Exception) {
             Resource.Error(e.localizedMessage ?: "")
         }
+    }
+
+    override suspend fun getCharacterComicsFromLocalCache(characterId: Int): List<CharacterContent> {
+        val results = localDataSource.getAllCharacterComics(characterId)
+        return results.map {
+            CharacterContent(
+                it.characterId,
+                it.name,
+                it.description,
+                it.thumbnailUrl
+            )
+        }
+    }
+
+    override suspend fun insertCharacterComicsIntoLocalCache(
+        characterId: Int,
+        list: List<CharacterContent>
+    ) {
+        localDataSource.insertAllCharacterComics(list.map {
+            CharacterContentEntity(
+                it.name ?: "",
+                it.imgUrl,
+                it.description,
+                MarvelLocalDataSource.ContentType.Comic.tag,
+                characterId
+            )
+        })
     }
     //endregion
 
