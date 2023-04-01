@@ -215,7 +215,7 @@ class LiveCharacterRepository @Inject constructor(
     //endregion
 
     //region series
-    override suspend fun getCharacterSeries(characterId: Int): Resource<List<CharacterContent>> {
+    override suspend fun getCharacterSeriesFromRemote(characterId: Int): Resource<List<CharacterContent>> {
         return try {
             val response = remoteDataSource.getCharacterSeries(characterId)
             response.body()?.data?.let {
@@ -226,6 +226,36 @@ class LiveCharacterRepository @Inject constructor(
         } catch (e: Exception) {
             Resource.Error(e.localizedMessage ?: "")
         }
+    }
+
+    override suspend fun getCharacterSeriesFromLocalCache(characterId: Int): List<CharacterContent> {
+        val results = localDataSource.getAllCharacterContent(
+            characterId,
+            MarvelLocalDataSource.ContentType.Series
+        )
+        return results.map {
+            CharacterContent(
+                it.characterId,
+                it.name,
+                it.description,
+                it.thumbnailUrl
+            )
+        }
+    }
+
+    override suspend fun insertCharacterSeriesIntoLocalCache(
+        characterId: Int,
+        list: List<CharacterContent>
+    ) {
+        localDataSource.insertAllCharacterContent(list.map {
+            CharacterContentEntity(
+                it.name ?: "",
+                it.imgUrl,
+                it.description,
+                MarvelLocalDataSource.ContentType.Series.tag,
+                characterId
+            )
+        })
     }
     //endregion
 }
