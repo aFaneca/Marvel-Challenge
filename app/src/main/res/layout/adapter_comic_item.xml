@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_cover"
+        android:layout_width="150dp"
+        android:layout_height="225dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="@dimen/default_border_radius"
+        app:cardElevation="0dp"
+        app:cardUseCompatPadding="false"
+        android:layout_marginStart="@dimen/margin_default"
+        app:cardPreventCornerOverlap="false"
+        app:cardForegroundColor="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_cover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/missing_comic" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:paddingHorizontal="@dimen/margin_default"
+        app:layout_constraintEnd_toEndOf="@+id/cv_cover"
+        app:layout_constraintStart_toStartOf="@+id/cv_cover"
+        app:layout_constraintTop_toBottomOf="@id/cv_cover"
+        tools:text="The Invincible Iron Man #47 (1972)" />
+</androidx.constraintlayout.widget.ConstraintLayout>

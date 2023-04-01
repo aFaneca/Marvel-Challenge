@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="bottom_navigation_background">@color/bluish_grey</color>
+    <color name="bottom_navigation_icon_color">@color/washed_pink</color>
+    <color name="bottom_navigation_icon_color_selected">@color/white</color>
+    <color name="app_color_background">@color/brownish_black</color>
+    <color name="search_view_background_color">@color/bluish_grey</color>
+    <color name="about_top_quote_color">@color/black_70</color>
+</resources>

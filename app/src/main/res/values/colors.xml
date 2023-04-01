@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="violet_main">#6415A9</color>
+    <color name="violet_lighter">#9576B1</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="grey">#12000000</color>
+    <color name="bluish_grey">#12FFFFFF</color>
+    <color name="brownish_black">#181818</color>
+    <color name="washed_pink">#B8A8A8</color>
+    <color name="red">#F0131E</color>
+    <color name="red_darker">#B10F16</color>
+    <color name="white_70">#B2FFFFFF</color>
+    <color name="black_70">#B2000000</color>
+    <color name="bottom_navigation_background">@color/grey</color>
+    <color name="bottom_navigation_icon_color">@color/violet_lighter</color>
+    <color name="bottom_navigation_icon_color_selected">@color/violet_main</color>
+    <color name="app_color_background">@color/white</color>
+    <color name="search_view_background_color">@color/grey</color>
+    <color name="about_top_quote_color">@color/white_70</color>
+</resources>

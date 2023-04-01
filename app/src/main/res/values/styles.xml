@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="App.Header" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">@dimen/font_size_header</item>
+        <item name="android:lineSpacingMultiplier">1.19</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="App.Headline" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">@dimen/font_size_bigger</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingMultiplier">1.19</item>
+    </style>
+
+    <style name="About.TopQuote" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">@dimen/font_size_regular</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:lineSpacingMultiplier">1.56</item>
+    </style>
+
+    <style name="About.RegularText" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">@dimen/font_size_small</item>
+        <item name="android:lineSpacingMultiplier">1.75</item>
+    </style>
+
+</resources>
