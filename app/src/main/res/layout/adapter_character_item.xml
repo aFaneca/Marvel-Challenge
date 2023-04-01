@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
+    android:layout_height="@dimen/default_character_list_card_height"
     android:layout_marginVertical="@dimen/margin_default"
     android:elevation="0dp"
     app:cardCornerRadius="@dimen/default_border_radius">
@@ -37,7 +37,7 @@
                 android:id="@+id/tv_character"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="@dimen/font_size_big"
                 tools:text="Ironheart (Riri Williams)"
                 android:textStyle="bold"
                 android:textColor="@color/white"

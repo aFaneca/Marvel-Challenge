@@ -1,9 +1,9 @@
 package com.afaneca.marvelchallenge.data.local
 
-import com.afaneca.marvelchallenge.data.local.db.character.CharacterContentDao
-import com.afaneca.marvelchallenge.data.local.db.character.CharacterContentEntity
 import com.afaneca.marvelchallenge.data.local.db.character.CharacterDao
 import com.afaneca.marvelchallenge.data.local.db.character.CharacterDbEntity
+import com.afaneca.marvelchallenge.data.local.db.content.CharacterContentDao
+import com.afaneca.marvelchallenge.data.local.db.content.CharacterContentEntity
 import javax.inject.Inject
 
 class RoomMarvelLocalDataSource @Inject constructor(

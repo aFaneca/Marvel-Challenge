@@ -59,7 +59,7 @@
                         android:lineSpacingMultiplier="1.19"
                         android:maxLines="3"
                         android:textColor="@color/white"
-                        android:textSize="27sp"
+                        android:textSize="@dimen/font_size_bigger"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/iv_share"

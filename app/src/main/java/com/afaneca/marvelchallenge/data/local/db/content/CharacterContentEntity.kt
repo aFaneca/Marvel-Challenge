@@ -1,4 +1,4 @@
-package com.afaneca.marvelchallenge.data.local.db.character
+package com.afaneca.marvelchallenge.data.local.db.content
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

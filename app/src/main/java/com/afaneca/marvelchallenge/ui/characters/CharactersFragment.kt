@@ -15,12 +15,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afaneca.marvelchallenge.MainActivity
+import com.afaneca.marvelchallenge.R
+import com.afaneca.marvelchallenge.common.Constants
 import com.afaneca.marvelchallenge.databinding.FragmentCharactersBinding
 import com.afaneca.marvelchallenge.ui.hideSoftKeyboard
 import com.afaneca.marvelchallenge.ui.model.CharacterUiModel
 import com.afaneca.marvelchallenge.ui.safeNavigate
+import com.afaneca.marvelchallenge.ui.utils.GlideApp
+import com.afaneca.marvelchallenge.ui.utils.ImageLoader
 import com.afaneca.marvelchallenge.ui.utils.InfiniteScrollListener
 import com.afaneca.marvelchallenge.ui.utils.setVisibilityWithAnimation
+import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
+import com.bumptech.glide.util.FixedPreloadSizeProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -138,7 +144,9 @@ class CharactersFragment : Fragment() {
         if (binding.rvList.adapter == null) {
             // setup recycler view
             binding.rvList.apply {
-                adapter = CharacterListAdapter() { character ->
+                adapter = CharacterListAdapter(
+                    requestManager = ImageLoader.getRequestBuilder(context),
+                ) { character ->
                     goToDetails(character)
                 }.also {
                     // Restore recycler state only when adapter is not empty
@@ -153,6 +161,22 @@ class CharactersFragment : Fragment() {
                     // on load more
                     viewModel.requestNextPage()
                 })
+
+                // Setup RecyclerViewPreloader to preload images ahead of time
+                val cardWidth = binding.root.width;
+                val cardHeight =
+                    resources.getDimensionPixelSize(R.dimen.default_character_list_card_height);
+                val viewPreloadSizeProvider =
+                    FixedPreloadSizeProvider<String>(cardWidth, cardHeight)
+
+                val recyclerViewPreLoader = RecyclerViewPreloader(
+                    GlideApp.with(requireActivity()),
+                    adapter as CharacterListAdapter,
+                    viewPreloadSizeProvider,
+                    Constants.DEFAULT_PAGE_SIZE
+                )
+
+                addOnScrollListener(recyclerViewPreLoader)
             }
         }
         // update list

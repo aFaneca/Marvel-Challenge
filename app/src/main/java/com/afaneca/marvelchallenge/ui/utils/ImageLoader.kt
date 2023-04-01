@@ -1,10 +1,12 @@
 package com.afaneca.marvelchallenge.ui.utils
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.afaneca.marvelchallenge.R
-import com.bumptech.glide.Glide
+import com.afaneca.marvelchallenge.ui.normalizeUrlToHttps
+import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 object ImageLoader {
@@ -17,11 +19,27 @@ object ImageLoader {
         view: ImageView,
         @DrawableRes placeholder: Int = R.drawable.ic_icon
     ) {
-        Glide.with(context)
-            .load(url)
-            .thumbnail(0.1f)
+        GlideApp.with(context)
+            .load(url.normalizeUrlToHttps())
+            .thumbnail(getThumbnailRequestBuilder(context))
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .placeholder(placeholder)
             .into(view)
+    }
+
+    fun preLoadImageIntoView(
+        requestBuilder: RequestBuilder<Drawable>,
+        url: String?,
+    ): RequestBuilder<Drawable> {
+        return requestBuilder.load(url?.normalizeUrlToHttps())
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+    }
+
+    fun getRequestBuilder(context: Context): RequestBuilder<Drawable> {
+        return GlideApp.with(context).asDrawable()
+    }
+
+    private fun getThumbnailRequestBuilder(context: Context): RequestBuilder<Drawable> {
+        return GlideApp.with(context).asDrawable().sizeMultiplier(0.1f)
     }
 }

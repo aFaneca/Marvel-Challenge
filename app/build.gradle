@@ -7,10 +7,16 @@ plugins {
 }
 
 // Scan secret.properties file
-def secretPropertiesFile = rootProject.file("secret.properties")
+def secretPropertiesFile = rootProject.file("app/secret.properties")
 def secretProperties = new Properties()
 secretProperties.load(new FileInputStream(secretPropertiesFile))
 def marvelApiKey = secretProperties['marvelApi.publicKey']
+
+// Scan keystore.properties file
+def keystorePropertiesFile = rootProject.file("app/keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 
 android {
     namespace 'com.afaneca.marvelchallenge'
@@ -27,10 +33,22 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -94,7 +112,11 @@ dependencies {
 
     // Glide (Image Loading)
     implementation "com.github.bumptech.glide:glide:$glide_version"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+    implementation("com.github.bumptech.glide:recyclerview-integration:$glide_version") {
+        // Excludes the support library because it's already included by Glide.
+        transitive = false
+    }
 
     // Timber (Logging)
     implementation 'com.jakewharton.timber:timber:5.0.1'
