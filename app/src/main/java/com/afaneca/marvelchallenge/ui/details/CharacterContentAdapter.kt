@@ -91,7 +91,7 @@ class CharacterContentAdapter(
             with(binding.ivCover) {
                 ImageLoader.loadImageIntoView(
                     context,
-                    item.imgUrl?.normalizeUrlToHttps() ?: "",
+                    item.imgUrl ?: "",
                     this,
                     placeholder = R.drawable.missing_comic
                 )

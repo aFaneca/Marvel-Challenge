@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.afaneca.marvelchallenge.R
 import com.afaneca.marvelchallenge.databinding.AdapterComicItemBinding
 import com.afaneca.marvelchallenge.ui.model.TopSellingItemUiModel
-import com.afaneca.marvelchallenge.ui.normalizeUrlToHttps
 import com.afaneca.marvelchallenge.ui.utils.ImageLoader
 
 class TopSellingAdapter(
@@ -67,7 +66,7 @@ class TopSellingAdapter(
             with(binding.ivCover) {
                 ImageLoader.loadImageIntoView(
                     context,
-                    item.imgUrl.normalizeUrlToHttps() ?: "",
+                    item.imgUrl,
                     this,
                     placeholder = R.drawable.missing_comic
                 )

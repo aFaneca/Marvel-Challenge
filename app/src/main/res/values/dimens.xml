@@ -7,4 +7,5 @@
     <dimen name="margin_small">4dp</dimen>
 
     <dimen name="default_border_radius">16dp</dimen>
+    <dimen name="default_character_list_card_height">180dp</dimen>
 </resources>
