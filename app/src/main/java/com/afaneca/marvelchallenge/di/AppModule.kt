@@ -1,10 +1,17 @@
 package com.afaneca.marvelchallenge.di
 
+import android.content.Context
+import androidx.room.Room
 import com.afaneca.marvelchallenge.BuildConfig
 import com.afaneca.marvelchallenge.common.AppDispatchers
 import com.afaneca.marvelchallenge.common.Constants
+import com.afaneca.marvelchallenge.data.local.MarvelLocalDataSource
 import com.afaneca.marvelchallenge.data.local.MockTopSellingLocalDataSource
+import com.afaneca.marvelchallenge.data.local.RoomMarvelLocalDataSource
 import com.afaneca.marvelchallenge.data.local.TopSellingLocalDataSource
+import com.afaneca.marvelchallenge.data.local.db.MarvelDatabase
+import com.afaneca.marvelchallenge.data.local.db.character.CharacterContentDao
+import com.afaneca.marvelchallenge.data.local.db.character.CharacterDao
 import com.afaneca.marvelchallenge.data.remote.ApiMarvelRemoteDataSource
 import com.afaneca.marvelchallenge.data.remote.MarvelApi
 import com.afaneca.marvelchallenge.data.remote.MarvelRemoteDataSource
@@ -15,6 +22,7 @@ import com.afaneca.marvelchallenge.domain.repository.TopSellingRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
@@ -69,8 +77,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideCharacterRepository(
+        localDataSource: MarvelLocalDataSource,
         remoteDataSource: MarvelRemoteDataSource,
-    ): CharacterRepository = LiveCharacterRepository(remoteDataSource)
+    ): CharacterRepository = LiveCharacterRepository(localDataSource, remoteDataSource)
 
     @Provides
     @Singleton
@@ -80,6 +89,19 @@ object AppModule {
     //endregion
 
     //region DB
+    @Provides
+    @Singleton
+    fun provideMarvelDatabase(@ApplicationContext context: Context): MarvelDatabase =
+        Room.databaseBuilder(context, MarvelDatabase::class.java, "marvel-db")
+            .fallbackToDestructiveMigration().build()
+
+    @Provides
+    @Singleton
+    fun provideCharacterDao(db: MarvelDatabase) = db.characterDao()
+
+    @Provides
+    @Singleton
+    fun provideCharacterContentDao(db: MarvelDatabase) = db.characterContentDao()
     //endregion
 
     //region Data Sources
@@ -93,6 +115,13 @@ object AppModule {
     @Singleton
     fun provideTopSellingLocalDataSource(): TopSellingLocalDataSource =
         MockTopSellingLocalDataSource()
+
+    @Provides
+    @Singleton
+    fun provideMarvelLocalDataSource(
+        characterDao: CharacterDao,
+        characterContentDao: CharacterContentDao
+    ): MarvelLocalDataSource = RoomMarvelLocalDataSource(characterDao, characterContentDao)
     //endregion
 
     //region misc

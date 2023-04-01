@@ -14,15 +14,27 @@ class GetCharacterSeriesUseCase @Inject constructor(
         characterId: Int,
     ): Flow<Resource<List<CharacterContent>>> = flow {
         emit(Resource.Loading())
-        when (val response = characterRepository.getCharacterSeries(characterId)) {
+        when (val response = characterRepository.getCharacterSeriesFromRemote(characterId)) {
             is Resource.Success -> {
+                // Cache results to local data source
                 response.data?.let {
-                    emit(Resource.Success(it))
+                    characterRepository.insertCharacterSeriesIntoLocalCache(characterId, it)
                 } ?: run { emit(Resource.Error("")) }
+
+                // Fetch final list from local data source (single source of truth)
+                val cachedSeries = characterRepository.getCharacterSeriesFromLocalCache(characterId)
+                emit(Resource.Success(cachedSeries))
             }
 
             is Resource.Error -> {
-                emit(Resource.Error(response.message ?: ""))
+                // In case of failure (e.g. no internet), return the cached version, if it exists
+                val cachedSeries = characterRepository.getCharacterSeriesFromLocalCache(characterId)
+                if (cachedSeries.isEmpty()) {
+                    // If cached version doesn't exist, emit error
+                    emit(Resource.Error(response.message ?: ""))
+                } else {
+                    emit(Resource.Success(cachedSeries))
+                }
             }
 
             else -> {}
