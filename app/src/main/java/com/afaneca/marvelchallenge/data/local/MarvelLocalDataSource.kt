@@ -20,11 +20,12 @@ interface MarvelLocalDataSource {
     suspend fun insertAllCharacters(dataset: List<CharacterDbEntity>)
 
     //endregion
-    //region comics
-    suspend fun getAllCharacterComics(
-        characterId: Int
+    //region content
+    suspend fun getAllCharacterContent(
+        characterId: Int,
+        contentType: ContentType
     ): List<CharacterContentEntity>
 
-    suspend fun insertAllCharacterComics(dataset: List<CharacterContentEntity>)
+    suspend fun insertAllCharacterContent(dataset: List<CharacterContentEntity>)
     //endregion
 }

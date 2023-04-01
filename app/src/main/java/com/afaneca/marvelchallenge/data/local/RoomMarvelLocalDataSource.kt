@@ -20,13 +20,16 @@ class RoomMarvelLocalDataSource @Inject constructor(
         characterDao.insertAll(dataset)
     }
 
-    override suspend fun getAllCharacterComics(characterId: Int): List<CharacterContentEntity> =
+    override suspend fun getAllCharacterContent(
+        characterId: Int,
+        contentType: MarvelLocalDataSource.ContentType
+    ): List<CharacterContentEntity> =
         characterContentDao.getCharacterContent(
-            characterId,
-            MarvelLocalDataSource.ContentType.Comic.tag
+            characterId, contentType.tag
         )
 
-    override suspend fun insertAllCharacterComics(dataset: List<CharacterContentEntity>) {
+    override suspend fun insertAllCharacterContent(dataset: List<CharacterContentEntity>) {
         characterContentDao.insertAll(dataset)
     }
+
 }

@@ -14,15 +14,27 @@ class GetCharacterEventsUseCase @Inject constructor(
         characterId: Int,
     ): Flow<Resource<List<CharacterContent>>> = flow {
         emit(Resource.Loading())
-        when (val response = characterRepository.getCharacterEvents(characterId)) {
+        when (val response = characterRepository.getCharacterEventsFromRemote(characterId)) {
             is Resource.Success -> {
+                // Cache results to local data source
                 response.data?.let {
-                    emit(Resource.Success(it))
+                    characterRepository.insertCharacterEventsIntoLocalCache(characterId, it)
                 } ?: run { emit(Resource.Error("")) }
+
+                // Fetch final list from local data source (single source of truth)
+                val cachedEvents = characterRepository.getCharacterEventsFromLocalCache(characterId)
+                emit(Resource.Success(cachedEvents))
             }
 
             is Resource.Error -> {
-                emit(Resource.Error(response.message ?: ""))
+                // In case of failure (e.g. no internet), return the cached version, if it exists
+                val cachedEvents = characterRepository.getCharacterEventsFromLocalCache(characterId)
+                if (cachedEvents.isEmpty()) {
+                    // If cached version doesn't exist, emit error
+                    emit(Resource.Error(response.message ?: ""))
+                } else {
+                    emit(Resource.Success(cachedEvents))
+                }
             }
 
             else -> {}

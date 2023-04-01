@@ -94,7 +94,10 @@ class LiveCharacterRepository @Inject constructor(
     }
 
     override suspend fun getCharacterComicsFromLocalCache(characterId: Int): List<CharacterContent> {
-        val results = localDataSource.getAllCharacterComics(characterId)
+        val results = localDataSource.getAllCharacterContent(
+            characterId,
+            MarvelLocalDataSource.ContentType.Comic
+        )
         return results.map {
             CharacterContent(
                 it.characterId,
@@ -109,7 +112,7 @@ class LiveCharacterRepository @Inject constructor(
         characterId: Int,
         list: List<CharacterContent>
     ) {
-        localDataSource.insertAllCharacterComics(list.map {
+        localDataSource.insertAllCharacterContent(list.map {
             CharacterContentEntity(
                 it.name ?: "",
                 it.imgUrl,
@@ -122,7 +125,7 @@ class LiveCharacterRepository @Inject constructor(
     //endregion
 
     //region events
-    override suspend fun getCharacterEvents(characterId: Int): Resource<List<CharacterContent>> {
+    override suspend fun getCharacterEventsFromRemote(characterId: Int): Resource<List<CharacterContent>> {
         return try {
             val response = remoteDataSource.getCharacterEvents(characterId)
             response.body()?.data?.let {
@@ -133,6 +136,36 @@ class LiveCharacterRepository @Inject constructor(
         } catch (e: Exception) {
             Resource.Error(e.localizedMessage ?: "")
         }
+    }
+
+    override suspend fun getCharacterEventsFromLocalCache(characterId: Int): List<CharacterContent> {
+        val results = localDataSource.getAllCharacterContent(
+            characterId,
+            MarvelLocalDataSource.ContentType.Event
+        )
+        return results.map {
+            CharacterContent(
+                it.characterId,
+                it.name,
+                it.description,
+                it.thumbnailUrl
+            )
+        }
+    }
+
+    override suspend fun insertCharacterEventsIntoLocalCache(
+        characterId: Int,
+        list: List<CharacterContent>
+    ) {
+        localDataSource.insertAllCharacterContent(list.map {
+            CharacterContentEntity(
+                it.name ?: "",
+                it.imgUrl,
+                it.description,
+                MarvelLocalDataSource.ContentType.Event.tag,
+                characterId
+            )
+        })
     }
     //endregion
 
